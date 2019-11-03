@@ -10,7 +10,7 @@ module.exports = {
     entry: './src/scripts/main.js',
     output: {
         filename: 'scripts/[name].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         publicPath: '/',
     },
     module: {
@@ -84,12 +84,12 @@ module.exports = {
     },
     devtool: 'source-map',
     devServer: {
-        contentBase: './dist',
+        contentBase: './docs',
         host: getLocalIP()
     },
     plugins: [
         //清除多余的文件
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['docs']),
         //将打包后js和css文件自动添加到HTML页面中
         new HtmlWebpackPlugin({
             template: './index.html'
