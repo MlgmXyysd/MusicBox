@@ -6,7 +6,7 @@ import MusicBox from './musicBox.js';
 export default class musicHandle {
 
     constructor() {
-		let version = "1.3.1";
+		let version = "1.3.5";
 		document.getElementById('ver').innerHTML = version;
 
         // 乐谱数据
@@ -27,7 +27,6 @@ export default class musicHandle {
         this.oSpeedAddBtn = document.getElementById('bpm-add');
         this.oSpeedValue = document.getElementById('speed-value');
         this.musicPlayBtn = document.getElementById('music-play');
-        this.musicPauseBtn = document.getElementById('music-pause');
         this.musicStopBtn = document.getElementById('music-stop');
         this.musicClearBtn = document.getElementById('music-clear');
 
@@ -99,18 +98,6 @@ export default class musicHandle {
             }
         });
 		
-		// 暂停/播放
-		this.musicPauseBtn.addEventListener('click', () => {
-			if (!this.paused) { // 若正播放，则停止
-				this.pauseMusic();
-				this.paused = true;
-			} else { // 若已停止，则播放
-				if (this.curMusic === -1) return;
-				this.chooseMusic(this.curMusic);
-				this.paused = false;
-			}
-        });
-		
 		// 清空曲目并暂停播放
 		this.musicStopBtn.addEventListener('click', () => {
 			if (this.curMusic !== -1) this.aMusicName[this.curMusic].classList.remove('cur');
@@ -168,74 +155,8 @@ export default class musicHandle {
 			}
             this.setMusicSpeed(this.speed);
         });
-
-        // 键盘控制
-        // document.addEventListener('keydown', (e) => {
-            // let nodeName = document.activeElement.nodeName.toLowerCase();
-            // if (nodeName !== 'textarea') {  // 此时焦点不在textarea上
-                // const step = Number(this.oSpeed.step);
-                // const min = Number(this.oSpeed.min);
-                // const max = Number(this.oSpeed.max);
-                // const typeLen = this.aMusicType.length;
-                // switch (e.keyCode) {
-                    // 停止与播放
-                    // case 32: {
-                        // if (this.curMusic === -1) this.curMusic = 0;
-                        // if (!this.paused) { // 若正播放，则停止
-                            // this.pauseMusic();
-                            // this.paused = true;
-                        // } else { // 若已停止，则播放
-                            // this.chooseMusic(this.curMusic);
-                            // this.paused = false;
-                        // }
-                    // }
-                        // break;
-                    // 减慢播放速度
-                    // case 189: {
-                        // if (this.speed > min) this.speed -= step;
-                        // this.setMusicSpeed(this.speed);
-                    // }
-                        // break;
-                    // 加快播放速度
-                    // case 187: {
-                        // if (this.speed < max) this.speed += step;
-                        // this.setMusicSpeed(this.speed);
-                    // }
-                        // break;
-                    // 上一种音色类型
-                    // case 37: {
-                        // this.curType = (this.curType + typeLen - 1) % typeLen;
-                        // this.setMusicType(this.curType);
-                    // }
-                        // break;
-                    // 下一种音色类型
-                    // case 39: {
-                        // this.curType = (this.curType + 1) % typeLen;
-                        // this.setMusicType(this.curType);
-                    // }
-                        // break;
-                    // 上一首
-                    // case 38: {
-                        // if (this.initMusicText.length) {
-                            // this.curMusic = (this.curMusic + this.initMusicText.length - 1) % this.initMusicText.length;
-                            // this.chooseMusic(this.curMusic);
-                        // }
-                    // }
-                        // break;
-                    // 下一首
-                    // case 40: {
-                        // if (this.initMusicText.length) {
-                            // this.curMusic = (this.curMusic + 1) % this.initMusicText.length;
-                            // this.chooseMusic(this.curMusic);
-                        // }
-                    // }
-                        // break;
-                // }
-            // }
-        // });
-
     }
-
+	
     // 乐谱编写说明
     help() {
         document.querySelector('.help .icon').addEventListener('click', () => {

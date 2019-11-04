@@ -41,9 +41,9 @@
     <div class="form-grp align-top">
         <label>类型：</label>
         <div class="type-list">
-            <label class="type sine"><input name="type" type="radio" value="0"/><span>sine</span></label>
+            <label class="type sine"><input checked name="type" type="radio" value="0"/><span>sine</span></label>
             <label class="type square"><input name="type" type="radio" value="1"/><span>square</span></label>
-            <label class="type triangle"><input checked name="type" type="radio"
+            <label class="type triangle"><input name="type" type="radio"
                                                 value="2"/><span>triangle</span></label>
             <label class="type sawtooth"><input name="type" type="radio" value="3"/><span>sawtooth</span></label>
         </div>
@@ -56,15 +56,10 @@
         <label for="chord-text">和弦：</label>
         <textarea id="chord-text" class="textarea" placeholder="输入和弦后按播放键即可播放音乐哦~"></textarea>
     </div>
-    <div class="form-grp align-top">
-        <label>曲目：</label>
-        <div class="music-name" id="music-name"></div>
-    </div>
 	<div class="form-grp align-top">
 		<label>操作：</label>
 		<div class="options">
            <div class="btn" id="music-play"><span>播放乐谱</span></div>
-           <div class="btn" id="music-pause"><span>暂停/继续播放</span></div>
            <div class="btn" id="music-stop"><span>停止播放</span></div>
            <div class="btn" id="music-clear"><span>清空乐谱</span></div>
 		</div>
@@ -84,6 +79,10 @@
             <input class="unit" id="loop" type="checkbox"/>
             <label class="unit" for="loop">循环播放</label>
         </div>
+    </div>
+    <div class="form-grp align-top">
+        <label>曲目：</label>
+        <div class="music-name" id="music-name"></div>
     </div>
 </div>
 

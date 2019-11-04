@@ -15,10 +15,10 @@ class MusicBox {
             loop: false, // 循环播放
             musicText: '',  // 乐谱
             autoplay: 60, // 自动弹奏速度
-            type: 'triangle',  // 音色类型  sine|square|triangle|sawtooth
+            type: 'sine',  // 音色类型  sine|square|triangle|sawtooth
             duration: 2,  // 键音延长时间
-            volume: 1,     // 音量
-            mixing: false,  // 混合立体音
+            volume: 0.5,     // 音量
+            mixing: true,  // 混合立体音
             keyboard: true  // 键盘控制
 
         };
