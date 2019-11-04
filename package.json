@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "dev": "webpack-dev-server --open",
-    "build": "webpack && copy .\\src\\res .\\build\\res"
+    "build": "webpack && mkdir .\\build\\res && copy .\\src\\res .\\build\\res\\"
   },
   "keywords": [],
   "author": "",

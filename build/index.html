@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <title>音乐盒</title>
+<link href="/css/main.css" rel="stylesheet"></head>
+<body>
+
+<img alt="background" class="bg" src="/src/images/bg_1.jpg">
+
+<div class="help">
+    <span class="icon"></span>
+    <div class="popup">
+        <div class="box">
+            <div class="close">×</div>
+            <h2>乐谱编写说明</h2>
+            <ul class="content">
+                <li>1. 音上三个点由低到高分别依次对应大写字母（O,P,Q,R,S,T,U）</li>
+                <li>2. 音上二个点由低到高分别依次对应大写字母（H,I,J,K,L,M,N）</li>
+                <li>3. 高音由低到高分别依次对应大写字母（A,B,C,D,E,F,G）</li>
+                <li>4. 中音由低到高分别依次对应数字（1,2,3,4,5,6,7）</li>
+                <li>5. 低音由低到高分别依次对应小写字母（a,b,c,d,e,f,g）</li>
+                <li>6. 音下二个点由低到高分别依次对应小写字母（h,i,j,k,l,m,n）</li>
+                <li>7. 音下三个点由低到高分别依次对应小写字母（o,p,q,r,s,t,u）</li>
+                <li>8. <span>空格</span>代表四分音符时值，<span>符号"-"</span>代表八分音符时值，<span>符号"="</span>代表十六分音符时值</li>
+                <li>9. 音符紧挨一起则代表同时发声</li>
+                <li>10. 键盘1-7,Q-U,A-J分别代表低音,中音,高音</li>
+				<li>版本：<span id="ver">Unknown</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h2 class="title">音乐盒</h2>
+<div class="music-box"></div>
+<div class="chord"></div>
+
+<div class="form">
+    <div class="form-grp align-top">
+        <label>类型：</label>
+        <div class="type-list">
+            <label class="type sine"><input name="type" type="radio" value="0"/><span>sine</span></label>
+            <label class="type square"><input name="type" type="radio" value="1"/><span>square</span></label>
+            <label class="type triangle"><input checked name="type" type="radio"
+                                                value="2"/><span>triangle</span></label>
+            <label class="type sawtooth"><input name="type" type="radio" value="3"/><span>sawtooth</span></label>
+        </div>
+    </div>
+    <div class="form-grp align-top">
+        <label for="music-text">乐谱：</label>
+        <textarea id="music-text" class="textarea" placeholder="输入乐谱后按播放键即可播放音乐哦~"></textarea>
+    </div>
+    <div class="form-grp align-top">
+        <label for="chord-text">和弦：</label>
+        <textarea id="chord-text" class="textarea" placeholder="输入和弦后按播放键即可播放音乐哦~"></textarea>
+    </div>
+    <div class="form-grp align-top">
+        <label>曲目：</label>
+        <div class="music-name" id="music-name"></div>
+    </div>
+	<div class="form-grp align-top">
+		<label>操作：</label>
+		<div class="options">
+           <div class="btn" id="music-play"><span>播放乐谱</span></div>
+           <div class="btn" id="music-pause"><span>暂停/继续播放</span></div>
+           <div class="btn" id="music-stop"><span>停止播放</span></div>
+           <div class="btn" id="music-clear"><span>清空乐谱</span></div>
+		</div>
+	</div>
+    <div class="form-grp">
+        <label>速度：</label>
+        <div class="options">
+            <div class="btn" id="bpm-sub"><span>&#60;</span></div>
+            <input id="speed" type="range" step="1" value="80" min="3" max="300"/>
+            <div class="btn" id="bpm-add"><span>&#62;</span></div>
+            <input id="speed-value" type="text" value="80" style="width: 23px;"/><span class="unit">bpm</span>
+        </div>
+    </div>
+    <div class="form-grp">
+        <label>设置：</label>
+        <div class="options">
+            <input class="unit" id="loop" type="checkbox"/>
+            <label class="unit" for="loop">循环播放</label>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/scripts/main.js"></script></body>
+</html>
