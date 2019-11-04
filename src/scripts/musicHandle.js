@@ -6,6 +6,8 @@ import MusicBox from './musicBox.js';
 export default class musicHandle {
 
     constructor() {
+		let version = "1.3.1";
+		document.getElementById('ver').innerHTML = version;
 
         // 乐谱数据
         this.initMusicText = [];
@@ -20,8 +22,14 @@ export default class musicHandle {
         this.chordTextBox = document.getElementById('chord-text');
         this.oMusicName = document.querySelector('.music-name');
         this.oSpeed = document.getElementById('speed');
+        this.oLoop = document.getElementById('loop');
+        this.oSpeedSubBtn = document.getElementById('bpm-sub');
+        this.oSpeedAddBtn = document.getElementById('bpm-add');
         this.oSpeedValue = document.getElementById('speed-value');
         this.musicPlayBtn = document.getElementById('music-play');
+        this.musicPauseBtn = document.getElementById('music-pause');
+        this.musicStopBtn = document.getElementById('music-stop');
+        this.musicClearBtn = document.getElementById('music-clear');
 
         this.musicTypes = ['sine', 'square', 'triangle', 'sawtooth'];
         this.curType = Number(this.oMusicType.value); // 当前音色类型
@@ -30,6 +38,7 @@ export default class musicHandle {
         this.paused = true;  // 是否停止播放
         this.curMusic = -1; // 当前音乐
         this.speed = Number(this.oSpeed.value);  // 播放速度
+        this.loop = this.oLoop.checked;  // 循环播放
 
         this.init();
 
@@ -77,7 +86,7 @@ export default class musicHandle {
                     }
                     if (chordText) {
                         this.chord = new MusicBox('.chord', {
-                            loop: true, // 循环播放
+                            loop: this.loop, // 循环播放
                             musicText: decodeURIComponent(chordText),  // 乐谱
                             autoplay: this.oSpeed.value, // 自动弹奏速度
                             duration: 3,  // 键音延长时间
@@ -89,77 +98,141 @@ export default class musicHandle {
                 alert('请输入乐谱！');
             }
         });
+		
+		// 暂停/播放
+		this.musicPauseBtn.addEventListener('click', () => {
+			if (!this.paused) { // 若正播放，则停止
+				this.pauseMusic();
+				this.paused = true;
+			} else { // 若已停止，则播放
+				if (this.curMusic === -1) return;
+				this.chooseMusic(this.curMusic);
+				this.paused = false;
+			}
+        });
+		
+		// 清空曲目并暂停播放
+		this.musicStopBtn.addEventListener('click', () => {
+			if (this.curMusic !== -1) this.aMusicName[this.curMusic].classList.remove('cur');
+            this.curMusic = -1;
+			this.pauseMusic();
+			this.paused = true;
+        });
+		
+		// 清空乐谱和曲目并暂停播放
+		this.musicClearBtn.addEventListener('click', () => {
+			if (confirm("确定清空？")) {
+				if (this.curMusic !== -1) this.aMusicName[this.curMusic].classList.remove('cur');
+				this.curMusic = -1;
+				this.musicTextBox.value = "";
+				this.chordTextBox.value = "";
+				this.pauseMusic();
+				this.paused = true;
+			}
+        });
 
         // 设置播放速度
         this.setMusicSpeed(this.oSpeed.value);
         this.oSpeed.addEventListener('input', () => {
             this.setMusicSpeed(this.oSpeed.value);
         });
+        this.oSpeedValue.addEventListener('input', () => {
+            this.setMusicSpeed(this.oSpeedValue.value);
+        });
+		
+		// 循环播放
+        this.oLoop.addEventListener('change', () => {
+            this.loop = this.oLoop.checked;
+			if (this.music) {
+				this.music.changeLoop(this.loop);
+			}
+			if (this.chord) {
+				this.chord.changeLoop(this.loop);
+			}
+        });
+		
+		// 减慢播放速度
+		this.oSpeedSubBtn.addEventListener('click', () => {
+            this.speed = Number(this.oSpeed.value);
+			if (this.speed > Number(this.oSpeed.min)) {
+				this.speed -= Number(this.oSpeed.step);
+			}
+            this.setMusicSpeed(this.speed);
+        });
+		
+		// 加快播放速度
+		this.oSpeedAddBtn.addEventListener('click', () => {
+            this.speed = Number(this.oSpeed.value);
+			if (this.speed < Number(this.oSpeed.max)) {
+				this.speed += Number(this.oSpeed.step);
+			}
+            this.setMusicSpeed(this.speed);
+        });
 
         // 键盘控制
-        document.addEventListener('keydown', (e) => {
-            let nodeName = document.activeElement.nodeName.toLowerCase();
-            if (nodeName !== 'textarea') {  // 此时焦点不在textarea上
-                const step = Number(this.oSpeed.step);
-                const min = Number(this.oSpeed.min);
-                const max = Number(this.oSpeed.max);
-                const typeLen = this.aMusicType.length;
-                switch (e.keyCode) {
+        // document.addEventListener('keydown', (e) => {
+            // let nodeName = document.activeElement.nodeName.toLowerCase();
+            // if (nodeName !== 'textarea') {  // 此时焦点不在textarea上
+                // const step = Number(this.oSpeed.step);
+                // const min = Number(this.oSpeed.min);
+                // const max = Number(this.oSpeed.max);
+                // const typeLen = this.aMusicType.length;
+                // switch (e.keyCode) {
                     // 停止与播放
-                    case 32: {
-                        if (this.curMusic === -1) this.curMusic = 0;
-                        if (!this.paused) { // 若正播放，则停止
-                            this.pauseMusic();
-                            this.paused = true;
-                        } else { // 若已停止，则播放
-                            this.chooseMusic(this.curMusic);
-                            this.paused = false;
-                        }
-                    }
-                        break;
+                    // case 32: {
+                        // if (this.curMusic === -1) this.curMusic = 0;
+                        // if (!this.paused) { // 若正播放，则停止
+                            // this.pauseMusic();
+                            // this.paused = true;
+                        // } else { // 若已停止，则播放
+                            // this.chooseMusic(this.curMusic);
+                            // this.paused = false;
+                        // }
+                    // }
+                        // break;
                     // 减慢播放速度
-                    case 189: {
-                        if (this.speed > min) this.speed -= step;
-                        this.setMusicSpeed(this.speed);
-                    }
-                        break;
+                    // case 189: {
+                        // if (this.speed > min) this.speed -= step;
+                        // this.setMusicSpeed(this.speed);
+                    // }
+                        // break;
                     // 加快播放速度
-                    case 187: {
-                        if (this.speed < max) this.speed += step;
-                        this.setMusicSpeed(this.speed);
-                    }
-                        break;
+                    // case 187: {
+                        // if (this.speed < max) this.speed += step;
+                        // this.setMusicSpeed(this.speed);
+                    // }
+                        // break;
                     // 上一种音色类型
-                    case 37: {
-                        this.curType = (this.curType + typeLen - 1) % typeLen;
-                        this.setMusicType(this.curType);
-                    }
-                        break;
+                    // case 37: {
+                        // this.curType = (this.curType + typeLen - 1) % typeLen;
+                        // this.setMusicType(this.curType);
+                    // }
+                        // break;
                     // 下一种音色类型
-                    case 39: {
-                        this.curType = (this.curType + 1) % typeLen;
-                        this.setMusicType(this.curType);
-                    }
-                        break;
+                    // case 39: {
+                        // this.curType = (this.curType + 1) % typeLen;
+                        // this.setMusicType(this.curType);
+                    // }
+                        // break;
                     // 上一首
-                    case 38: {
-                        if (this.initMusicText.length) {
-                            this.curMusic = (this.curMusic + this.initMusicText.length - 1) % this.initMusicText.length;
-                            this.chooseMusic(this.curMusic);
-                        }
-                    }
-                        break;
+                    // case 38: {
+                        // if (this.initMusicText.length) {
+                            // this.curMusic = (this.curMusic + this.initMusicText.length - 1) % this.initMusicText.length;
+                            // this.chooseMusic(this.curMusic);
+                        // }
+                    // }
+                        // break;
                     // 下一首
-                    case 40: {
-                        if (this.initMusicText.length) {
-                            this.curMusic = (this.curMusic + 1) % this.initMusicText.length;
-                            this.chooseMusic(this.curMusic);
-                        }
-                    }
-                        break;
-                }
-            }
-        });
+                    // case 40: {
+                        // if (this.initMusicText.length) {
+                            // this.curMusic = (this.curMusic + 1) % this.initMusicText.length;
+                            // this.chooseMusic(this.curMusic);
+                        // }
+                    // }
+                        // break;
+                // }
+            // }
+        // });
 
     }
 
@@ -188,9 +261,6 @@ export default class musicHandle {
         ajax({
             url: require(`../res/musicList.json`),
             dataType: 'json',
-            data: {
-                page: 0
-            },
             success: (res) => {
                 if (res.code === 200) {
                     this.initMusicText = res.data.list;
@@ -209,9 +279,8 @@ export default class musicHandle {
                         });
                     }
                 } else {
-                    console.log(res.msg);
+                    alert("获取乐谱失败：" + res.msg);
                 }
-
             }
         });
 
@@ -221,7 +290,7 @@ export default class musicHandle {
     playMusic(musicText) {
         let autoplay = musicText ? Number(this.oSpeed.value) : false;
         return new MusicBox('.music-box', {
-            loop: true, // 循环播放
+            loop: this.loop, // 循环播放
             musicText: decodeURIComponent(musicText),  // 乐谱
             autoplay: autoplay, // 自动弹奏速度
             type: this.musicType,  // 音色类型  sine|square|triangle|sawtooth
@@ -232,8 +301,9 @@ export default class musicHandle {
 
     // 设置播放速度
     setMusicSpeed(speed) {
+		this.speed = speed;
         this.oSpeed.value = speed;
-        this.oSpeedValue.innerHTML = speed;
+        this.oSpeedValue.value = speed;
         this.oSpeed.style.backgroundSize = speed / 3 + '% 100%';
         this.music.setPlaySpeed(speed);
         if (this.chord) {
@@ -246,10 +316,12 @@ export default class musicHandle {
         // noinspection JSUnresolvedVariable
         let melodyText = this.initMusicText[i].melody;
         let chordText = this.initMusicText[i].chord;
+        let bpm = this.initMusicText[i].bpm;
         for (let i = 0; i < this.aMusicName.length; i++) {
             this.aMusicName[i].classList.remove('cur');
         }
         this.aMusicName[i].classList.add('cur');
+		this.setMusicSpeed(bpm);
         this.paused = false;
         this.musicTextBox.value = decodeURIComponent(melodyText);
         this.chordTextBox.value = decodeURIComponent(chordText);
@@ -261,14 +333,14 @@ export default class musicHandle {
         }
         if (chordText) {
             this.chord = new MusicBox('.chord', {
-                loop: true, // 循环播放
+                loop: this.loop, // 循环播放
                 musicText: decodeURIComponent(chordText),  // 乐谱
                 autoplay: this.oSpeed.value, // 自动弹奏速度
                 duration: 3,  // 键音延长时间
                 volume: .2    // 音量
             });
         }
-        this.oTitle.innerHTML = this.initMusicText[i].name;
+        // this.oTitle.innerHTML = this.initMusicText[i].name;
         // document.title = this.oTitle.innerHTML;
     }
 

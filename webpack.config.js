@@ -89,7 +89,7 @@ module.exports = {
     },
     plugins: [
         //清除多余的文件
-        // new CleanWebpackPlugin(['build']),
+        new CleanWebpackPlugin(['build']),
         //将打包后js和css文件自动添加到HTML页面中
         new HtmlWebpackPlugin({
             template: './index.html'
@@ -97,7 +97,7 @@ module.exports = {
         //将css生成单独文件
         new ExtractTextPlugin('css/main.css'),
         //将js进行压缩混淆
-        // new uglify()
+        new uglify()
     ]
 };
 

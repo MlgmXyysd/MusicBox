@@ -15,7 +15,7 @@ class MusicBox {
             loop: false, // 循环播放
             musicText: '',  // 乐谱
             autoplay: 60, // 自动弹奏速度
-            type: 'sine',  // 音色类型  sine|square|triangle|sawtooth
+            type: 'triangle',  // 音色类型  sine|square|triangle|sawtooth
             duration: 2,  // 键音延长时间
             volume: 1,     // 音量
             mixing: false,  // 混合立体音
@@ -95,7 +95,7 @@ class MusicBox {
         // 音符
         this.arrNotes = ['o', 'p', 'q', 'r', 's', 't', 'u', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'a', 'b', 'c', 'd', 'e', 'f', 'g', '1', '2', '3', '4', '5', '6', '7', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'];
         // 键码值
-        this.keyCodes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 83, 68, 70, 71, 72, 74, 81, 87, 69, 82, 84, 89, 85, 49, 50, 51, 52, 53, 54, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.keyCodes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49, 50, 51, 52, 53, 54, 55, 81, 87, 69, 82, 84, 89, 85, 65, 83, 68, 70, 71, 72, 74, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         // 绘制钢琴
         this.draw();
@@ -157,6 +157,11 @@ class MusicBox {
         }
 
     }
+	
+	// 修改循环播放
+	changeLoop(loop) {
+		this.opts.loop = loop;
+	}
 
     // 绘制钢琴
     draw() {
@@ -245,7 +250,7 @@ class MusicBox {
     pressBtn(i) {
 
         this.musicBtn[i].className = 'cur';
-        console.log(this.arrFrequency[i]);
+        // console.log(this.arrFrequency[i]);
         this.createMusic(this.arrNotes[i]);
         // this.createSound(this.arrFrequency[i]);
         setTimeout(() => {
