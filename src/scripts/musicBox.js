@@ -108,7 +108,6 @@ class MusicBox {
             this.speed = this.opts.autoplay === true ? this.speed : this.opts.autoplay;
             this.playMusic(this.opts.musicText);
         }
-
     }
 
     // 创建声音
