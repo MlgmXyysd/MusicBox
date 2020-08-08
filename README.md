@@ -30,3 +30,7 @@
 >7. 音上三个点由低到高分别依次对应大写字母（O,P,Q,R,S,T,U）
 >8. 空格代表四分音符时值，符号"-"代表八分音符时值，符号"="代表十六分音符时值
 >9. 音符紧挨一起则代表同时发声
+
+
+### Thanks
+[chchlsh/MusicBox](https://github.com/chchlsh/MusicBox)
